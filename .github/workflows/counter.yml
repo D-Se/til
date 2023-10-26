@@ -1,0 +1,25 @@
+name: CountTIL
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update_templates:
+    if: "startswith(github.event.head_commit.message, '~')"
+    name: "Update # TIL"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Fetching repo contents"
+        uses: actions/checkout@main
+
+      - name: Update README.md
+        run: |
+          entries=$(grep 'Entries:' README.md | grep -oe '\([0-9]*\)')
+          entries=$((entries + 1))
+          sed -i "s/Entries:.*/Entries: $entries/g" README.md
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git diff --quiet && git diff --staged --quiet || git commit -am "+ TIL count"
+          git push
