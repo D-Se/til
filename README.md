@@ -1,6 +1,6 @@
 # Today I learned.
 
-Entries: 3
+Entries: 4
 
 # Usage
 Include a tilde (~) to mark a commit as a new TIL.
